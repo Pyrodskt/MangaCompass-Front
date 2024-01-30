@@ -2,9 +2,8 @@
     <v-container class="container">
       <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
       <v-container class="gallery">
-        <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item" te>
-          <v-card-title v-text="item.title" style="word-break: break-word;"></v-card-title>
-          <v-img :src="'src/assets/dbz.jpg'" alt="Gallery Item"/>
+        <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-h5 py-2" te v-bind:title="item.title" style="word-break: break-word;">
+          <!-- <v-img :src="'assets/dbz.jpg'" alt="Gallery Item"/> -->
           
           <v-combobox :items="item.list" item/>
 
@@ -40,7 +39,7 @@ import axios from 'axios';
       },
       createList() {
         for (let i = 0; i < 12; i ++) {
-          this.items.push({id: i, image:'src/assets/dbz.jpg'})
+          this.items.push({id: i, image:'assets/dbz.jpg'})
         }
       }
     },
@@ -82,7 +81,7 @@ import axios from 'axios';
   .gallery-item {
     width: 20%;
     margin: 10px;
-
+    text-wrap: balance;
 
   }
 
