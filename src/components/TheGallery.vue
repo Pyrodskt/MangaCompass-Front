@@ -77,8 +77,9 @@ import axios from 'axios';
   
         const searchTermLowerCase = this.searchTerm.toLowerCase();
         return this.items.filter(item =>
-          item.title.toLowerCase().includes(searchTermLowerCase).filter(value => !value.list[0].includes(value.current))
-        );
+          item.title.toLowerCase().includes(searchTermLowerCase)
+          
+        ).filter(value => !value.list[0].includes(value.current));
       },
       
 
