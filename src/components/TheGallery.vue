@@ -1,23 +1,30 @@
 <template>
     <v-container class="container">
       <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
-      
+      <h1>Nouveaux chapitres</h1>
       <v-container class="gallery">
-        <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item" :title="item.title">
+        
+        <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-center mx-auto text-h5 mb-6" :title="item.title" >
           <!-- <v-img :src="'assets/dbz.jpg'" alt="Gallery Item"/> -->
           <!-- <v-card-title :title="item.title"></v-card-title> -->
-          <!-- <v-card-subtitle ></v-card-subtitle> -->
+          <v-card-subtitle>{{ item.current + " / " + item.list[0] }}</v-card-subtitle>
           <!-- <v-combobox :items="item.list" item/> -->
-          <v-btn block @click="this.selectItem(item)">Voir plus</v-btn>
+          <v-btn block @click="this.selectItem(item)" color="light-green">Voir plus</v-btn>
         </v-card>
-        <v-dialog v-model="dialog" theme="dark">
+        <v-dialog v-model="dialog" theme="light" transition="dialog-bottom-transition">
           <v-sheet elevation="12" max-width="600" rounded="lg" width="100%" class="pa-4 text-center mx-auto">
             
             <h1 class="text-h5 mb-6">{{ this.selected_item.title }}</h1>
+            <h3>Lecture sur : {{ this.selected_item.url.split("/")[2] }}</h3>
             <h2>Derniers chapitres</h2>
-            <v-list :items="this.selected_item.list.slice(1, 5)" ></v-list>
+            <v-list :items="this.selected_item.list.slice(0, 5)" ></v-list>
             <h2>Dernier chapitre lu : {{ this.selected_item.current }}</h2>
-            <v-btn color="success">Lire en ligne</v-btn>
+            <br/>
+            <div class="dialog-actions">
+              <v-btn color="success" @click="openInNewTab(this.selected_item.url)">Lire en ligne</v-btn>
+              <v-btn color="close" @click="this.dialog = false">Fermer la page</v-btn>
+            </div>
+            
 
             
           </v-sheet>
@@ -45,7 +52,7 @@ import axios from 'axios';
       getData() {
         try {
           const response =  axios.get("http://localhost:5000/mangas").then(response => { this.items = response.data.message.datas})
-          console.log(this.items)
+          return response
           
 
         }
@@ -54,27 +61,23 @@ import axios from 'axios';
           
         }
       },
-      createList() {
-        for (let i = 0; i < 12; i ++) {
-          this.items.push({id: i, image:'assets/dbz.jpg'})
-        }
-      },
       selectItem(sel) {
-        console.log(sel)
         this.selected_item = sel
         this.dialog = true
-        console.log(this.selected_item)
-      }
+      },
+      openInNewTab(url) {
+        window.open(url, '_blank', 'noreferrer');
+    },
     },
     computed: {
       filteredItems() {
         if (!this.searchTerm) {
-          return this.items;
+          return this.items.filter(value =>  !value.list[0].includes(value.current));
         }
   
         const searchTermLowerCase = this.searchTerm.toLowerCase();
         return this.items.filter(item =>
-          item.title.toLowerCase().includes(searchTermLowerCase)
+          item.title.toLowerCase().includes(searchTermLowerCase).filter(value => !value.list[0].includes(value.current))
         );
       },
       
@@ -105,6 +108,10 @@ import axios from 'axios';
     
     margin: 10px;
     text-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
   }
 
   .item-page {
@@ -135,6 +142,13 @@ import axios from 'axios';
     height: auto;
   }
 
+  .dialog-actions{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+  }
   
   </style>
  
