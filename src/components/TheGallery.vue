@@ -16,10 +16,9 @@
             
             <h1 class="text-h5 mb-6">{{ this.selected_item.title }}</h1>
             <h3>Lecture sur : {{ this.selected_item.url.split("/")[2] }}</h3>
-            <h2>Derniers chapitres</h2>
-            <v-list :items="this.selected_item.list.slice(0, 5)" ></v-list>
+            <h2>Derniers chapitres sortis</h2>
+            <v-list :items="this.selected_item.list.slice(0, 5)"></v-list>
             <h2>Dernier chapitre lu : {{ this.selected_item.current }}</h2>
-            <br/>
             <div class="dialog-actions">
               <v-btn color="success" @click="openInNewTab(this.selected_item.url)">Lire en ligne</v-btn>
               <v-btn color="close" @click="this.dialog = false">Fermer la page</v-btn>
@@ -128,7 +127,7 @@ import axios from 'axios';
 
   .searchbar {
     width: 100%;
-    height: 20%;
+    max-height: 15%;
     padding: 12px;
   }
   
