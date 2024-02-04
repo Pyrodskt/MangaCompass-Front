@@ -1,7 +1,7 @@
 <template>
-    <!-- <TheGallery /> -->
+     <TheRecherche /> 
 </template>
 
 <script setup>
-  import TheGallery from '@/components/TheGallery.vue'
+  import TheRecherche from '@/components/TheRecherche.vue'
 </script>

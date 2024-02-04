@@ -1,7 +1,7 @@
 <template>
     <v-container class="container">
       <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
-      <h1>Nouveaux chapitres</h1>
+      <h1>Rechercher</h1>
       <v-container class="gallery">
         
         <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-center mx-auto text-h5 mb-6" :title="item.title" >
@@ -16,15 +16,9 @@
             
             <h1 class="text-h5 mb-6">{{ this.selected_item.title }}</h1>
             <h3>Lecture sur : {{ this.selected_item.url.split("/")[2] }}</h3>
-            <h2>Il vous reste {{ this.calculateDifferenceChapter() }} chapitre à lire</h2>
-
-            
-            <h2>Dernier chapitre lu :</h2>
-            <div class="update-actions">
-              <v-combobox v-model="combomodel" :items="this.selected_item.list"></v-combobox>
-              <v-btn  size="large" icon="mdi-content-save" @click="this.postData()"></v-btn>
-            </div>
-            
+            <h2>Derniers chapitres sortis</h2>
+            <v-list :items="this.selected_item.list.slice(0, 5)"></v-list>
+            <h2>Dernier chapitre lu : {{ this.selected_item.current }}</h2>
             <div class="dialog-actions">
               <v-btn color="success" @click="openInNewTab(this.selected_item.url)">Lire en ligne</v-btn>
               <v-btn color="close" @click="this.dialog = false">Fermer la page</v-btn>
@@ -50,7 +44,7 @@ import axios from 'axios';
         selected_item: [],
         api_result: this.getData(),
         dialog: false,
-        combomodel: '',
+        
       };
     },
     methods: {
@@ -66,30 +60,9 @@ import axios from 'axios';
           
         }
       },
-      postData(){
-        try {
-          const url = "http://localhost:5000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
-          console.log(url)
-          const response = axios.post(url).then(res => { console.log(res)})
-          return response
-        }
-        catch(errir){
-          console.log(error)
-        }
-      },
       selectItem(sel) {
         this.selected_item = sel
-        this.combomodel = this.selected_item.current
         this.dialog = true
-      },
-
-      calculateDifferenceChapter() {
-        let counter = 1
-        this.selected_item.list.some(element => {
-            counter+=1
-            return element == this.selected_item.current
-        });
-        return counter
       },
       openInNewTab(url) {
         window.open(url, '_blank', 'noreferrer');
@@ -98,11 +71,11 @@ import axios from 'axios';
     computed: {
       filteredItems() {
         if (!this.searchTerm) {
-          return this.items.filter(value =>  !value.list[0].includes(value.current));
+          return this.items;
         }
   
         const searchTermLowerCase = this.searchTerm.toLowerCase();
-        return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase)).filter(value => !value.list[0].includes(value.current));
+        return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase));
       },
       
 
@@ -166,12 +139,6 @@ import axios from 'axios';
     height: auto;
   }
 
-  .update-actions{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
   .dialog-actions{
     width: 100%;
     display: flex;
