@@ -1,14 +1,12 @@
+
 <template>
     <v-container class="container">
-      <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
-      <h1>Nouveaux chapitres</h1>
+      
+      <h1>{{ this.page_title }}</h1>
       <v-container class="gallery">
         
         <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-center mx-auto text-h5 mb-6" :title="item.title" >
-          <!-- <v-img :src="'assets/dbz.jpg'" alt="Gallery Item"/> -->
-          <!-- <v-card-title :title="item.title"></v-card-title> -->
           <v-card-subtitle>{{ item.current + " / " + item.list[0] }}</v-card-subtitle>
-          <!-- <v-combobox :items="item.list" item/> -->
           <v-btn block @click="this.selectItem(item)" color="light-green">Voir plus</v-btn>
         </v-card>
         <v-dialog v-model="dialog" theme="light" transition="dialog-bottom-transition">
@@ -45,7 +43,6 @@ import axios from 'axios';
   export default {
     data() {
       return {
-        searchTerm: '',
         items: [],
         selected_item: [],
         api_result: this.getData(),
@@ -106,6 +103,11 @@ import axios from 'axios';
       },
       
 
+    },
+    props: {
+      page_title: String,
+      searchTerm: String,
+    
     }
   };
 
