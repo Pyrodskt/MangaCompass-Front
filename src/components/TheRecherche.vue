@@ -16,9 +16,15 @@
             
             <h1 class="text-h5 mb-6">{{ this.selected_item.title }}</h1>
             <h3>Lecture sur : {{ this.selected_item.url.split("/")[2] }}</h3>
-            <h2>Derniers chapitres sortis</h2>
-            <v-list :items="this.selected_item.list.slice(0, 5)"></v-list>
-            <h2>Dernier chapitre lu : {{ this.selected_item.current }}</h2>
+            <h2>Il vous reste {{ this.calculateDifferenceChapter() }} chapitre à lire</h2>
+
+            
+            <h2>Dernier chapitre lu :</h2>
+            <div class="update-actions">
+              <v-combobox v-model="combomodel" :items="this.selected_item.list"></v-combobox>
+              <v-btn  size="large" icon="mdi-content-save" @click="this.postData()"></v-btn>
+            </div>
+            
             <div class="dialog-actions">
               <v-btn color="success" @click="openInNewTab(this.selected_item.url)">Lire en ligne</v-btn>
               <v-btn color="close" @click="this.dialog = false">Fermer la page</v-btn>
@@ -44,6 +50,7 @@ import axios from 'axios';
         selected_item: [],
         api_result: this.getData(),
         dialog: false,
+        combomodel: '',
         
       };
     },
@@ -60,8 +67,28 @@ import axios from 'axios';
           
         }
       },
+      postData(){
+        try {
+          const url = "http://localhost:5000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
+          console.log(url)
+          const response = axios.post(url).then(res => { console.log(res)})
+          return response
+        }
+        catch(errir){
+          console.log(error)
+        }
+      },
+      calculateDifferenceChapter() {
+        let counter = 1
+        this.selected_item.list.some(element => {
+            counter+=1
+            return element == this.selected_item.current
+        });
+        return counter
+      },
       selectItem(sel) {
         this.selected_item = sel
+        this.combomodel = this.selected_item.current
         this.dialog = true
       },
       openInNewTab(url) {
