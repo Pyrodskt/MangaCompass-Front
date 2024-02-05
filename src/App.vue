@@ -1,4 +1,4 @@
-<template>
+<template theme="dark">
   <router-view />
 </template>
 

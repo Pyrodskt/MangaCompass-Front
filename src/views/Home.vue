@@ -1,16 +1,18 @@
 <template>
-    <TheSearchBar v-model="searchTerm" ></TheSearchBar>
-    <TheGallery page_title='Nouveaux Chapitres' :searchTerm="this.modelValue"/>
+    <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
+    <TheGallery pageTitle='Nouveautés' :searchTerm="this.searchTerm"/>
 </template>
 
 <script setup>
-  import TheGallery from '@/components/TheGallery copy.vue'
-  import TheSearchBar from '@/components/TheSearchBar.vue'
+  import TheGallery from '@/components/TheGallery.vue'
+</script>
 
-
-  import { ref } from 'vue'
-
-  const searchTerm = ref('')
-
-
+<script>
+export default {
+    data() {
+      return {
+        searchTerm: '',
+      };
+    },
+}
 </script>

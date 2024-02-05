@@ -14,7 +14,9 @@ import { createVuetify } from 'vuetify/lib/framework.mjs'
 import { registerPlugins } from '@/plugins'
 
 const app = createApp(App)
-const vuetify = createVuetify()
+const vuetify = createVuetify({ theme: {
+    defaultTheme: "dark"
+}})
 registerPlugins(app)
 
 app.use(vuetify).mount('#app')

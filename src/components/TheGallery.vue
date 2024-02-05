@@ -1,17 +1,14 @@
 <template>
     <v-container class="container">
-      <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
-      <h1>Nouveaux chapitres</h1>
+      
+      <h1>{{ this.pageTitle }}</h1>
       <v-container class="gallery">
         
         <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-center mx-auto text-h5 mb-6" :title="item.title" >
-          <!-- <v-img :src="'assets/dbz.jpg'" alt="Gallery Item"/> -->
-          <!-- <v-card-title :title="item.title"></v-card-title> -->
           <v-card-subtitle>{{ item.current + " / " + item.list[0] }}</v-card-subtitle>
-          <!-- <v-combobox :items="item.list" item/> -->
           <v-btn block @click="this.selectItem(item)" color="light-green">Voir plus</v-btn>
         </v-card>
-        <v-dialog v-model="dialog" theme="light" transition="dialog-bottom-transition">
+        <v-dialog v-model="dialog" transition="dialog-bottom-transition">
           <v-sheet elevation="12" max-width="600" rounded="lg" width="100%" class="pa-4 text-center mx-auto">
             
             <h1 class="text-h5 mb-6">{{ this.selected_item.title }}</h1>
@@ -45,7 +42,6 @@ import axios from 'axios';
   export default {
     data() {
       return {
-        searchTerm: '',
         items: [],
         selected_item: [],
         api_result: this.getData(),
@@ -96,16 +92,32 @@ import axios from 'axios';
     },
     },
     computed: {
-      filteredItems() {
-        if (!this.searchTerm) {
-          return this.items.filter(value =>  !value.list[0].includes(value.current));
-        }
-  
+      filteredItems() {      
         const searchTermLowerCase = this.searchTerm.toLowerCase();
-        return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase)).filter(value => !value.list[0].includes(value.current));
+        if (this.pageTitle == "Nouveautés"){
+          
+          if (!this.searchTerm) {
+            return this.items.filter(value =>  !value.list[0].includes(value.current));
+          }
+          else {
+            return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase)).filter(value => !value.list[0].includes(value.current));
+          }
+        }
+
+        if (!this.searchTerm) {
+          return this.items;
+        }
+
+        else {
+          return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase))
+        }
       },
       
 
+    },
+    props: {
+      searchTerm: String,
+      pageTitle: String
     }
   };
 

@@ -1,7 +1,17 @@
 <template>
-     <TheRecherche /> 
+  <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
+  <TheGallery pageTitle='Recherche' :searchTerm="this.searchTerm"/>
 </template>
 
 <script setup>
-  import TheRecherche from '@/components/TheRecherche.vue'
+  import TheGallery from '@/components/TheGallery.vue';
+</script>
+<script>
+export default {
+    data() {
+      return {
+        searchTerm: '',
+      };
+    },
+}
 </script>
