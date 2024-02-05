@@ -26,6 +26,17 @@ const routes = [
         component: () => import('@/views/Recherche.vue')
       }
     ]
+  },
+  {
+    path: '/add',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Ajouter',
+        component: () => import('@/views/Add.vue')
+      }
+    ]
   }
 ]
 
