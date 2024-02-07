@@ -70,6 +70,11 @@ import axios from 'axios';
       postData(){
         try {
           const url = "http://localhost:1000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
+          this.items.forEach(element => {
+             if (element.url == this.selected_item.url){
+              element.current = this.combomodel
+             }
+          });
           console.log(url)
           axios.post(url).then(response => { this.response = response.data.message})
           
