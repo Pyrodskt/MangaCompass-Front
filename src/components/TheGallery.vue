@@ -1,7 +1,7 @@
 <template>
     <v-container class="container">
       
-      <h1>{{ this.pageTitle }}</h1>
+      <h1>{{ this.pageTitle }}  ( {{ this.filteredItems.length }} titres ) </h1>
       <v-container class="gallery">
         
         <v-card v-for="item in filteredItems" :key="item.id" class="gallery-item text-center mx-auto text-h5 mb-6" :title="item.title" >
@@ -32,6 +32,9 @@
           </v-sheet>
         </v-dialog>
       </v-container>
+      <v-snackbar v-model="snackbar" timeout="2000">
+        {{ this.response }}
+      </v-snackbar>
     </v-container>
     
   </template>
@@ -47,6 +50,8 @@ import axios from 'axios';
         api_result: this.getData(),
         dialog: false,
         combomodel: '',
+        snackbar: false,
+        response: ""
       };
     },
     methods: {
@@ -66,12 +71,13 @@ import axios from 'axios';
         try {
           const url = "http://localhost:5000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
           console.log(url)
-          const response = axios.post(url).then(res => { console.log(res)})
-          return response
+          axios.post(url).then(response => { this.response = response.data.message})
+          
         }
-        catch(errir){
+        catch(error){
           console.log(error)
         }
+        this.snackbar = true
       },
       selectItem(sel) {
         this.selected_item = sel
