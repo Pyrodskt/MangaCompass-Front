@@ -57,7 +57,7 @@ import axios from 'axios';
     methods: {
       getData() {
         try {
-          const response =  axios.get("http://localhost:5000/mangas").then(response => { this.items = response.data.message.datas})
+          const response =  axios.get("http://localhost:1000/mangas").then(response => { this.items = response.data.message.datas})
           return response
           
 
@@ -69,7 +69,7 @@ import axios from 'axios';
       },
       postData(){
         try {
-          const url = "http://localhost:5000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
+          const url = "http://localhost:1000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
           console.log(url)
           axios.post(url).then(response => { this.response = response.data.message})
           
