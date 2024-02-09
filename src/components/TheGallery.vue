@@ -101,6 +101,12 @@ import axios from 'axios';
       openInNewTab(url) {
         window.open(url, '_blank', 'noreferrer');
     },
+    checkFilter(value){
+      if (value.list[0] && !value.list[0].includes(value.current)){
+        return true
+      }
+      return false
+    },
     },
     computed: {
       filteredItems() {      
@@ -108,7 +114,9 @@ import axios from 'axios';
         if (this.pageTitle == "Nouveautés"){
           
           if (!this.searchTerm) {
-            return this.items.filter(value =>  !value.list[0].includes(value.current));
+            console.log(this.items)
+            return this.items.filter(value => this.checkFilter(value));           
+            
           }
           else {
             return this.items.filter(item => item.title.toLowerCase().includes(searchTermLowerCase)).filter(value => !value.list[0].includes(value.current));
@@ -126,6 +134,7 @@ import axios from 'axios';
       
 
     },
+    
     props: {
       searchTerm: String,
       pageTitle: String
