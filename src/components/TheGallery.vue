@@ -32,9 +32,9 @@
           </v-sheet>
         </v-dialog>
       </v-container>
-      <v-snackbar v-model="snackbar" timeout="2000">
+      <!-- <v-snackbar v-model="snackbar" timeout="2000">
         {{ this.response }}
-      </v-snackbar>
+      </v-snackbar> -->
     </v-container>
     
   </template>
@@ -57,7 +57,7 @@ import axios from 'axios';
     methods: {
       getData() {
         try {
-          const response =  axios.get("http://localhost:1000/mangas").then(response => { this.items = response.data.message.datas})
+          const response =  axios.get("http://localhost:1000/api/mangas").then(response => { this.items = response.data.message.datas})
           return response
           
 
@@ -69,15 +69,14 @@ import axios from 'axios';
       },
       postData(){
         try {
-          const url = "http://localhost:1000/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
+          const url = "http://localhost:1000/api/manga/".concat(this.selected_item.title,"?current=", this.combomodel)
           this.items.forEach(element => {
              if (element.url == this.selected_item.url){
               element.current = this.combomodel
              }
           });
           console.log(url)
-          axios.post(url).then(response => { this.response = response.data.message})
-          
+          axios.post(url).then(response => { this.response = response.data.message })
         }
         catch(error){
           console.log(error)
