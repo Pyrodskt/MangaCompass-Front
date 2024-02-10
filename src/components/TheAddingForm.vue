@@ -41,7 +41,7 @@ export default {
     
     postData(){
       try {
-        const url = "http://localhost:5000/add/manga"
+        const url = "http://localhost:1000/api/add/manga"
         console.log(url)
         const response = axios.post(url, {"title": this.titlemodel, "url": this.urlmodel}, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => this.response = response.data.message )
         this.snackbar = true

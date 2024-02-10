@@ -1,6 +1,6 @@
 <template>
     <v-text-field type="text" v-model="searchTerm" placeholder="Search..." class="searchbar"/>
-    <TheGallery pageTitle='Nouveautés' :searchTerm="this.searchTerm"/>
+    <TheGallery pageTitle='Nouveautés' :searchTerm="searchTerm"/>
 </template>
 
 <script setup>
